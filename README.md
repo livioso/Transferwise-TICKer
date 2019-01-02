@@ -1,10 +1,12 @@
-# Dashboard for Transferwise Rates
+# Transferwise Exchange Rates Dashboard
+
 
 ![dashboard](./chronograf/overview.png)
 
 - Tracks all Transferwise *CHF* exchange rates using the [TICK-Stack](https://www.influxdata.com/time-series-platform/).
 - Deployed on a Raspberry Pi with [Balena](https://www.balena.io) (see Balena-compatible `docker-compose.yml`).
 - Currency specific Kapacitor alerts (i.e. to Slack) can be set in [Chronograf](https://docs.influxdata.com/chronograf/v1.7/guides/create-alert-rules/).
+- Retention Policy: 14 days.
 
 
 ### Environment Variables
