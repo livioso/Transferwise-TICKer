@@ -1,0 +1,50 @@
+version: '2.1'
+
+services:
+  # Define a Telegraf service
+  transferwise:
+    build: transferwise
+    environment:
+      INFLUXDB_URL: influxdb
+      INFLUXDB_PORT: 8086
+    depends_on:
+      - influxdb
+  telegraf:
+    build: telegraf
+    volumes:
+      - conf:/etc/telegraf
+    depends_on:
+      - influxdb
+    ports:
+      - "8092:8092/udp"
+      - "8094:8094"
+      - "8125:8125/udp"
+  influxdb:
+    image: arm32v7/influxdb:1.7.2
+    volumes:
+      - data:/var/lib/influxdb
+    ports:
+      - "8086:8086"
+  chronograf:
+    image: arm32v7/chronograf:1.7.5
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+      KAPACITOR_URL: http://kapacitor:9092
+    ports:
+      - "80:8888"
+    depends_on:
+      - influxdb
+      - kapacitor
+  kapacitor:
+    image: arm32v7/kapacitor:1.5.2
+    environment:
+      KAPACITOR_HOSTNAME: kapacitor
+      KAPACITOR_INFLUXDB_0_URLS_0: http://influxdb:8086
+    depends_on:
+      - influxdb
+    ports:
+      - "9092:9092"
+
+volumes:
+  conf:
+  data:
