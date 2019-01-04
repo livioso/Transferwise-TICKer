@@ -1,7 +1,6 @@
 version: '2.1'
 
 services:
-  # Define a Telegraf service
   transferwise:
     build: transferwise
     environment:
